@@ -1,0 +1,6 @@
+build/
+.vscode/
+html/
+latex/
+*.lnk
+CMakeLists.txt.user
