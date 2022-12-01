@@ -1,8 +1,11 @@
 #include "MainWindow.h"
 
 #include <QApplication>
+#include <QPixmap>
 
 #include "config.h"
+
+#include <toolbox/ImageDisplayArea>
 
 int main(int argc, char *argv[])
 {
@@ -37,7 +40,13 @@ int main(int argc, char *argv[])
     qInfo("=============================");
 
     app.setWindowIcon(QIcon(":/icon.ico")); // 给app添加图标
-    MainWindow w;
-    w.show();
+
+    // MainWindow w;
+    // w.show();
+    ImageDisplayArea view;
+    view.showPixmap(QPixmap("./img.png"));
+    view.resize(800, 600);
+    view.show();
+
     return app.exec();
 }
