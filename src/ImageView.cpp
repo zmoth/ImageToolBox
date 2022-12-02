@@ -2,16 +2,15 @@
 
 #include "BasicImageScene.h"
 #include "shapes/CrossLine.h"
-#include "ImageItem.h"
 
-#include "QtMath"
+#include <QtMath>
 #include <QDebug>
-
 #include <QEvent>
 #include <QMouseEvent>
 #include <QWheelEvent>
-
-//#include <QGraphicsItem>
+#include <QGraphicsItem>
+#include <QGraphicsPixmapItem>
+#include <QGraphicsScene>
 #include <QPoint>
 #include <QPointF>
 
@@ -29,52 +28,43 @@ ImageView::ImageView(QWidget *parent) : QGraphicsView(parent)
   setCacheMode(QGraphicsView::CacheBackground);
   setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
 
-  if (!imageScene())
-  {
-    BasicImageScene *s = new BasicImageScene();
-    this->setScene(s);
-  }
+  this->setScene(std::make_unique<BasicImageScene>(new BasicImageScene()));
 
-  setScaleRange(0.1, 5);
-}
-
-ImageView::ImageView(BasicImageScene *scene, QWidget *parent)
-    : ImageView(parent)
-{
-  setScene(scene);
+  setScaleRange(0.1, 10);
 }
 
 ImageView::~ImageView()
 {
-  delete image;
   delete crossLine;
 }
 
-ImageItem *ImageView::imageItem() { return this->image; }
+// ImageItem *ImageView::imageItem() { return this->image; }
 
-QPixmap ImageView::pixmap() const { return this->image->pixmap(); }
+// QPixmap ImageView::pixmap() const { return this->image->pixmap(); }
 
-void ImageView::addPixmap(QPixmap pix)
+void ImageView::setImage(QPixmap pix)
 {
   if (pix.isNull())
     return;
-  scene()->setSceneRect(pix.rect());
-  image->setPixmap(pix);
+  _scene->setImage(pix);
+  // scene()->setSceneRect(pix.rect());
+  // image->setPixmap(pix);
 }
 
-void ImageView::setScene(BasicImageScene *scene)
+void ImageView::setScene(std::unique_ptr<BasicImageScene> scene)
 {
-  QGraphicsView::setScene(scene);
+  _scene = std::move(scene);
+  QGraphicsView::setScene(_scene.get());
 
-  image = new ImageItem();
-  scene->addItem(image);
+  // image = new ImageItem();
+  // scene->addItem(image);
 
   /* 十字中心线 */
-  crossLine = new QGraphicsCrossLineItem(scene->sceneRect());
+  crossLine = new QGraphicsCrossLineItem(_scene->sceneRect());
   QPen pen(Qt::green);
   pen.setWidth(1);
   crossLine->setPen(pen);
-  scene->addItem(crossLine);
+  _scene->addItem(crossLine);
   crossLine->setVisible(false);
 }
 
@@ -203,7 +193,7 @@ void ImageView::keyPressEvent(QKeyEvent *event)
 
   case Qt::Key_Control:
     setDragMode(QGraphicsView::RubberBandDrag);
-    _drawStatus = DrawShapes::Line;
+    // _drawStatus = DrawShapes::Line;
     break;
 
   default:
@@ -223,7 +213,7 @@ void ImageView::keyReleaseEvent(QKeyEvent *event)
 
   case Qt::Key_Control:
     setDragMode(QGraphicsView::ScrollHandDrag);
-    _drawStatus = DrawShapes::Normal;
+    // _drawStatus = DrawShapes::Normal;
     break;
 
   default:
@@ -245,21 +235,21 @@ void ImageView::mousePressEvent(QMouseEvent *event)
 {
   if (event->button() == Qt::LeftButton)
   {
-    //当图形处于绘制状态时
-    if (_drawStatus != DrawShapes::Normal)
-    {
-      //记录鼠标按下的点
-      // m_vetPoints.push_back(e->scenePos());
-    }
+    // // 当图形处于绘制状态时
+    // if (_drawStatus != DrawShapes::Normal)
+    // {
+    //   // 记录鼠标按下的点
+    //   _clickPos = mapToScene(event->pos());
+    // }
   }
   QGraphicsView::mousePressEvent(event);
 }
 void ImageView::mouseMoveEvent(QMouseEvent *event)
 {
-  if (_drawStatus != DrawShapes::Normal)
-  {
-    // this->drawShape(_drawStatus, m_vetPt, e->scenePos());
-  }
+  // if (_drawStatus != DrawShapes::Normal)
+  // {
+  //   // this->drawShape(_drawStatus, m_vetPt, e->scenePos());
+  // }
   QGraphicsView::mouseMoveEvent(event);
 }
 void ImageView::mouseReleaseEvent(QMouseEvent *event)
@@ -284,8 +274,7 @@ void ImageView::openCrossLine(bool flag)
 {
   if (flag == true)
   {
-    //    qDebug() << scene.sceneRect();
-    crossLine->setCrossLine(image->pixmap().rect());
+    crossLine->setCrossLine(sceneRect());
     crossLine->setVisible(true);
   }
   else
@@ -299,31 +288,4 @@ void ImageView::showEvent(QShowEvent *event)
   QGraphicsView::showEvent(event);
   scene()->setSceneRect(this->rect());
   centerScene();
-}
-
-BasicImageScene *ImageView::imageScene()
-{
-  return dynamic_cast<BasicImageScene *>(scene());
-}
-
-void ImageView::drawShape(DrawShapes shape, std::vector<QPointF> vetPt, QPointF ptCurrent)
-{
-  // m_pTempCanvasImg->fill(Qt::transparent);
-  // m_pTempPainter->setRenderHint(QPainter::Antialiasing, true);
-  // m_pTempPainter->setCompositionMode(QPainter::CompositionMode_Source);
-  // m_pTempPainter->setPen(QPen(QColor(51, 51, 51), 1, Qt::SolidLine, Qt::SquareCap, Qt::RoundJoin));
-  // switch (shape)
-  // {
-
-  // case DrawShapes::Line: //直线
-  //   break;
-  // case DrawShapes::Rect: //矩形
-  //   m_pTempPainter->drawRect(QRectF(vetPt[0], ptCurrent));
-  //   break;
-  // case 8: //圆形
-  //   break;
-  // default:
-  //   break;
-  // }
-  // update();
 }

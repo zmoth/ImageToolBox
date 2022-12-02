@@ -28,7 +28,7 @@ public:
   explicit ImageDisplayArea(QWidget *parent = nullptr);
   //  ~ImageDisplayArea();
 
-  QPixmap pixmap() const;       /* 当前显示图像获取 */
+  // QPixmap pixmap() const;       /* 当前显示图像获取 */
   void showPixmap(QPixmap pix); /* 图像展示*/
 
 private Q_SLOTS:

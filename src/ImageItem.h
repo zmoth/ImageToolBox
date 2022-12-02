@@ -23,8 +23,8 @@ public:
   explicit ImageItem();
   ~ImageItem();
 
-protected:
-  void hoverMoveEvent(QGraphicsSceneHoverEvent *event) override;
+  protected:
+    void hoverMoveEvent(QGraphicsSceneHoverEvent *event) override;
 
 Q_SIGNALS:
   void updateItemPixel(QPoint pos, QColor color); /* 更新像素信息的信号 */

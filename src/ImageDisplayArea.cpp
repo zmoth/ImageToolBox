@@ -58,19 +58,19 @@ ImageDisplayArea::ImageDisplayArea(QWidget *parent) : QWidget(parent)
           [=](bool flag)
           { View->openCrossLine(flag); });
 
-  connect(View->imageItem(), &ImageItem::updateItemPixel, this,
-          &ImageDisplayArea::on_updatePixal);
+  // connect(View->imageItem(), &ImageItem::updateItemPixel, this,
+  //         &ImageDisplayArea::on_updatePixal);
 }
 
 // ImageDisplayArea::~ImageDisplayArea() {}
 
-QPixmap ImageDisplayArea::pixmap() const { return View->pixmap(); }
+// QPixmap ImageDisplayArea::pixmap() const { return View->pixmap(); }
 
 void ImageDisplayArea::showPixmap(QPixmap pix)
 {
   if (pix.isNull())
     return;
-  View->addPixmap(pix);
+  View->setImage(pix);
   View->openCrossLine(btnCrossLine->isChecked());
   labelImageSize->setText(QString::number(pix.width()) + "x" +
                           QString::number(pix.height()));
