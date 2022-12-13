@@ -15,21 +15,23 @@
 #include <QObject>
 #include <QPointF>
 
-class ImageItem : public QObject, public QGraphicsPixmapItem
+class ImageItem
+    : public QObject
+    , public QGraphicsPixmapItem
 {
-  Q_OBJECT
+    Q_OBJECT
 
-public:
-  explicit ImageItem();
-  ~ImageItem();
+  public:
+    explicit ImageItem();
+    ~ImageItem();
 
-protected:
-  void hoverMoveEvent(QGraphicsSceneHoverEvent *event) override;
+  protected:
+    void hoverMoveEvent(QGraphicsSceneHoverEvent *event) override;
 
-Q_SIGNALS:
-  void updateItemPixel(QPoint pos, QColor color); /* 更新像素信息的信号 */
+  Q_SIGNALS:
+    void updateItemPixel(QPoint pos, QColor color); /* 更新像素信息的信号 */
 
-private:
+  private:
 };
 
 #endif // IMAGE_ITEM_H

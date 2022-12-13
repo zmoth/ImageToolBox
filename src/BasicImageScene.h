@@ -5,7 +5,7 @@
 class BasicImageScene : public QGraphicsScene
 {
     Q_OBJECT
-public:
+  public:
     BasicImageScene(QObject *parent = nullptr);
     ~BasicImageScene();
 };

@@ -11,28 +11,30 @@
 
 class QGraphicsCrossLineItem : public QGraphicsPathItem
 {
-public:
-  using QCrossRect = QRectF;
+  public:
+    using QCrossRect = QRectF;
 
-  enum CrossType
-  {
-    Straight,
-    Oblique,
-  };
+    enum CrossType
+    {
+        Straight,
+        Oblique,
+    };
 
-  explicit QGraphicsCrossLineItem(QGraphicsItem *parent = nullptr);
-  QGraphicsCrossLineItem(const QCrossRect &crossRect, QGraphicsItem *parent = nullptr);
-  QGraphicsCrossLineItem(qreal x, qreal y, qreal width, qreal height, QGraphicsItem *parent = nullptr);
+    explicit QGraphicsCrossLineItem(QGraphicsItem *parent = nullptr);
+    QGraphicsCrossLineItem(const QCrossRect &crossRect, QGraphicsItem *parent = nullptr);
+    QGraphicsCrossLineItem(qreal x, qreal y, qreal width, qreal height,
+                           QGraphicsItem *parent = nullptr);
 
-  void setCrossLine(const QCrossRect &crossline);
-  inline void setCrossLine(qreal x, qreal y, qreal width, qreal height)
-  {
-    setCrossLine(QCrossRect(x, y, width, height));
-  }
+    void setCrossLine(const QCrossRect &crossline);
 
-  void setCrossType(CrossType type);
+    inline void setCrossLine(qreal x, qreal y, qreal width, qreal height)
+    {
+        setCrossLine(QCrossRect(x, y, width, height));
+    }
 
-private:
-  CrossType _type = CrossType::Straight;
-  QCrossRect _crossRect;
+    void setCrossType(CrossType type);
+
+  private:
+    CrossType _type = CrossType::Straight;
+    QCrossRect _crossRect;
 };
