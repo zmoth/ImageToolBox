@@ -1,17 +1,17 @@
-#include "MainWindow.h"
+#include "config.h"
 
 #include <QApplication>
 #include <QPixmap>
-
-#include "config.h"
-
 #include <toolbox/ImageDisplayArea>
 
 int main(int argc, char *argv[])
 {
-    qSetMessagePattern("[%{time yyyyMMdd h:mm:ss.zzz}] [%{time process}] [%{if-debug}D%{endif}%{if-info}I%{endif}%{if-warning}W%{endif}%{if-critical}C%{endif}%{if-fatal}F%{endif}]: %{message}\t| (%{function}) [%{file}:%{line}]");
+    qSetMessagePattern(
+        "[%{time yyyyMMdd h:mm:ss.zzz}] [%{time process}] "
+        "[%{if-debug}D%{endif}%{if-info}I%{endif}%{if-warning}W%{endif}%{if-critical}C%{endif}%{if-"
+        "fatal}F%{endif}]: %{message}\t| (%{function}) [%{file}:%{line}]");
 
-    QApplication::setOrganizationName("moth");                // 此属性保存编写此应用程序的组织的名称
+    QApplication::setOrganizationName("moth"); // 此属性保存编写此应用程序的组织的名称
     QApplication::setApplicationName(PROJECT_NAME);           // 程序名
     QGuiApplication::setApplicationDisplayName(PROJECT_NAME); // 程序名
     QGuiApplication::setApplicationVersion(PROJECT_VER);      // 程序版本
@@ -29,7 +29,8 @@ int main(int argc, char *argv[])
 
     // Log some debug info
     qInfo("=============================");
-    qInfo("%s v%s", qUtf8Printable(QApplication::applicationDisplayName()), qUtf8Printable(QApplication::applicationVersion()));
+    qInfo("%s v%s", qUtf8Printable(QApplication::applicationDisplayName()),
+          qUtf8Printable(QApplication::applicationVersion()));
     qInfo("Build Date/Time: %s %s", __DATE__, __TIME__);
     qInfo("Qt: %s", qVersion());
     qInfo("OS: %s", qUtf8Printable(QSysInfo::prettyProductName()));
@@ -41,10 +42,7 @@ int main(int argc, char *argv[])
 
     app.setWindowIcon(QIcon(":/icon.ico")); // 给app添加图标
 
-    // MainWindow w;
-    // w.show();
     ImageDisplayArea view;
-    view.showPixmap(QPixmap("./img.png"));
     view.resize(800, 600);
     view.show();
 

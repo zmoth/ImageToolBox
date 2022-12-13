@@ -1,9 +1,5 @@
-#include "ShapePainter.h"
+#include "ShapePainter.hpp"
 
-ShapePainter::ShapePainter(/* args */)
-{
-}
+ShapePainter::ShapePainter(/* args */) {}
 
-ShapePainter::~ShapePainter()
-{
-}
+ShapePainter::~ShapePainter() {}

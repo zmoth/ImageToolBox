@@ -1,7 +1,6 @@
 #pragma once
 
-#if defined(__MINGW32__) || \
-    defined(__MINGW64__)
+#if defined(__MINGW32__) || defined(__MINGW64__)
 #define PROJECT_DLL_COMPILER "MinGW"
 #define PROJECT_DLL_COMPILER_MINGW
 #elif defined(__GNUC__)
@@ -22,12 +21,10 @@
 #elif defined(__CODEGEARC__)
 #define PROJECT_DLL_COMPILER "CodeGear C++ Builder"
 #define PROJECT_DLL_COMPILER_CODEGEAR
-#elif defined(__INTEL_COMPILER) || \
-    defined(__ICL)
+#elif defined(__INTEL_COMPILER) || defined(__ICL)
 #define PROJECT_DLL_COMPILER "Intel C++"
 #define PROJECT_DLL_COMPILER_INTEL
-#elif defined(__xlC__) || \
-    defined(__IBMCPP__)
+#elif defined(__xlC__) || defined(__IBMCPP__)
 #define PROJECT_DLL_COMPILER "IBM XL C++"
 #define PROJECT_DLL_COMPILER_IBM
 #elif defined(__HP_aCC)

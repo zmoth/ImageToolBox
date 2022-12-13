@@ -2,7 +2,7 @@
 
 class ShapePainter
 {
-public:
+  public:
     enum DrawShapes
     {
         Normal = 0, ///< 不绘制

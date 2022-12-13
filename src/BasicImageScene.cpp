@@ -1,12 +1,11 @@
-#include "BasicImageScene.h"
+#include "BasicImageScene.hpp"
 
-#include <QtMath>
 #include <QDebug>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsSceneMouseEvent>
+#include <QtMath>
 
-BasicImageScene::BasicImageScene(QObject *parent)
-    : QGraphicsScene(parent)
+BasicImageScene::BasicImageScene(QObject *parent) : QGraphicsScene(parent)
 {
     _imageItem = new QGraphicsPixmapItem();
     this->addItem(_imageItem);
