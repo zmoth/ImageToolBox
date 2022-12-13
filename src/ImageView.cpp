@@ -38,15 +38,17 @@ ImageView::~ImageView()
     delete crossLine;
 }
 
-// ImageItem *ImageView::imageItem() { return this->image; }
-
-// QPixmap ImageView::pixmap() const { return this->image->pixmap(); }
+QPixmap ImageView::image() const
+{
+    return _scene->image();
+}
 
 void ImageView::setImage(QPixmap pix)
 {
     if (pix.isNull())
         return;
     _scene->setImage(pix);
+    centerScene();
     // scene()->setSceneRect(pix.rect());
     // image->setPixmap(pix);
 }

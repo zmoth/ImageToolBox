@@ -17,10 +17,15 @@ BasicImageScene::~BasicImageScene()
         delete _imageItem;
 }
 
+QPixmap BasicImageScene::image() const
+{
+    return _imageItem->pixmap();
+}
+
 void BasicImageScene::setImage(QPixmap pix)
 {
     _imageItem->setPixmap(pix);
-    setSceneRect(pix.rect());
+    // setSceneRect(pix.rect());
 }
 
 void BasicImageScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
@@ -35,4 +40,3 @@ void BasicImageScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
         Q_EMIT updatePixelColor(_imageItem->pixmap().toImage().pixelColor(pos));
     }
 }
-
