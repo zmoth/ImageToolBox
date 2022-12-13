@@ -1,9 +1,10 @@
 #pragma once
 
-#include <QtWidgets/QGraphicsScene>
 #include <QEvent>
+#include <QtWidgets/QGraphicsScene>
 
 class ImageItem;
+
 /**
  * @brief 图片画布
  *
@@ -13,19 +14,20 @@ class ImageItem;
 class BasicImageScene : public QGraphicsScene
 {
     Q_OBJECT
-public:
+  public:
     explicit BasicImageScene(QObject *parent = nullptr);
     ~BasicImageScene();
 
+    QPixmap image() const;
     void setImage(QPixmap pix);
 
-Q_SIGNALS:
+  Q_SIGNALS:
     void updatePixelPos(QPoint pos);
     void updatePixelColor(QColor color);
 
-protected:
+  protected:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
 
-private:
+  private:
     QGraphicsPixmapItem *_imageItem = nullptr;
 };

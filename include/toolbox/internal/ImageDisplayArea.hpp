@@ -15,21 +15,20 @@
 #include <QAction>
 #include <QGraphicsView>
 #include <QLabel>
+#include <QMainWindow>
 #include <QPixmap>
 #include <QPushButton>
-#include <QWidget>
 
-class PROJECT_DLL_PUBLIC ImageDisplayArea : public QWidget
+class PROJECT_DLL_PUBLIC ImageDisplayArea : public QMainWindow
 {
     Q_OBJECT
 
   public:
     explicit ImageDisplayArea(QWidget *parent = nullptr);
-    //  ~ImageDisplayArea();
+    virtual ~ImageDisplayArea();
 
-    // QPixmap pixmap() const;       /* 当前显示图像获取 */
-
-    void showPixmap(QPixmap pix); /* 图像展示*/
+    QPixmap pixmap() const;      /* 当前显示图像获取 */
+    void setPixmap(QPixmap pix); /* 图像展示*/
 
   private Q_SLOTS:
     /**
@@ -40,6 +39,10 @@ class PROJECT_DLL_PUBLIC ImageDisplayArea : public QWidget
     void on_updatePixal(QPoint pos, QColor color);
 
     void on_changeColorFormat();
+
+    void loadImage();
+
+    void saveImage();
 
   private:
     QColor imageColor; /* 鼠标位置像素颜色 */
