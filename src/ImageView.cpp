@@ -1,14 +1,14 @@
-#include "ImageView.h"
+#include "ImageView.hpp"
 
-#include "BasicImageScene.h"
-#include "ImageItem.h"
-#include "QtMath"
-#include "shapes/CrossLine.h"
+#include "BasicImageScene.hpp"
+#include "ImageItem.hpp"
+#include "shapes/CrossLine.hpp"
 
 #include <QDebug>
 #include <QEvent>
 #include <QMouseEvent>
 #include <QWheelEvent>
+#include <QtMath>
 
 // #include <QGraphicsItem>
 #include <QPoint>

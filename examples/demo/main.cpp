@@ -1,4 +1,3 @@
-#include "MainWindow.h"
 #include "config.h"
 
 #include <QApplication>
@@ -43,10 +42,7 @@ int main(int argc, char *argv[])
 
     app.setWindowIcon(QIcon(":/icon.ico")); // 给app添加图标
 
-    // MainWindow w;
-    // w.show();
     ImageDisplayArea view;
-    view.showPixmap(QPixmap("./img.png"));
     view.resize(800, 600);
     view.show();
 

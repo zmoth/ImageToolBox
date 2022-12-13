@@ -1,4 +1,4 @@
-#include "CrossLine.h"
+#include "CrossLine.hpp"
 
 QGraphicsCrossLineItem::QGraphicsCrossLineItem(QGraphicsItem *parent) : QGraphicsPathItem(parent) {}
 

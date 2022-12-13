@@ -7,9 +7,6 @@
  */
 #pragma once
 
-#ifndef IMAGE_ITEM_H
-#define IMAGE_ITEM_H
-
 #include <QColor>
 #include <QGraphicsPixmapItem>
 #include <QObject>
@@ -33,5 +30,3 @@ class ImageItem
 
   private:
 };
-
-#endif // IMAGE_ITEM_H

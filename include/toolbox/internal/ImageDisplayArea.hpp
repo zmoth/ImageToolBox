@@ -10,7 +10,7 @@
 #pragma once
 
 #include "Export.hpp"
-#include "ImageView.h"
+#include "ImageView.hpp"
 
 #include <QAction>
 #include <QGraphicsView>

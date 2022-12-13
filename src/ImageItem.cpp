@@ -1,4 +1,4 @@
-#include "ImageItem.h"
+#include "ImageItem.hpp"
 
 #include <QDebug>
 #include <QGraphicsSceneMouseEvent>

@@ -1,6 +1,6 @@
-#include "ImageDisplayArea.h"
+#include "ImageDisplayArea.hpp"
 
-#include "ImageItem.h"
+#include "ImageItem.hpp"
 
 #include <QAbstractButton>
 #include <QBoxLayout>
