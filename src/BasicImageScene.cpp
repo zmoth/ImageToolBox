@@ -35,3 +35,4 @@ void BasicImageScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
         Q_EMIT updatePixelColor(_imageItem->pixmap().toImage().pixelColor(pos));
     }
 }
+

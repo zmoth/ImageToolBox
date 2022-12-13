@@ -28,6 +28,7 @@ class PROJECT_DLL_PUBLIC ImageDisplayArea : public QWidget
     //  ~ImageDisplayArea();
 
     // QPixmap pixmap() const;       /* 当前显示图像获取 */
+
     void showPixmap(QPixmap pix); /* 图像展示*/
 
   private Q_SLOTS:

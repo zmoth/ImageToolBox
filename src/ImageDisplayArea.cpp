@@ -58,6 +58,7 @@ ImageDisplayArea::ImageDisplayArea(QWidget *parent) : QWidget(parent)
     connect(btnCrossLine, &QAbstractButton::toggled, this,
             [=](bool flag) { View->openCrossLine(flag); });
 
+
     // connect(View->imageItem(), &ImageItem::updateItemPixel, this,
     //         &ImageDisplayArea::on_updatePixal);
 }

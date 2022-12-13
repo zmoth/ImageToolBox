@@ -35,7 +35,7 @@ class PROJECT_DLL_PUBLIC ImageView : public QGraphicsView
 
     void setImage(QPixmap pix);
     void openCrossLine(bool flag = false);
-
+    
     /// @brief max=0/min=0 indicates infinite zoom in/out
     void setScaleRange(double minimum = 0, double maximum = 0);
     void setScaleRange(ScaleRange range);
