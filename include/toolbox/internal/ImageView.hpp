@@ -7,22 +7,16 @@
  */
 #pragma once
 
-#include <QtWidgets/QGraphicsView>
-// #include <QGraphicsView>
 #include "Export.hpp"
 
-#include <QGraphicsItem>
-#include <QGraphicsPixmapItem>
-#include <QGraphicsScene>
+#include <QtWidgets/QGraphicsView>
 
 class BasicImageScene;
-class ImageItem;
 class QGraphicsCrossLineItem;
 
 class PROJECT_DLL_PUBLIC ImageView : public QGraphicsView
 {
     Q_OBJECT
-
   public:
     struct ScaleRange
     {
@@ -30,29 +24,18 @@ class PROJECT_DLL_PUBLIC ImageView : public QGraphicsView
         double maximum = 0;
     };
 
-    enum DrawShapes
-    {
-        Normal = 0, ///< 不绘制
-        Line,
-        Rect,
-    };
-
     explicit ImageView(QWidget *parent = nullptr);
-    ImageView(BasicImageScene *scene, QWidget *parent = nullptr);
     ~ImageView();
 
     ImageView(const ImageView &) = delete;
     ImageView operator=(const ImageView &) = delete;
 
-    ImageItem *imageItem();
-    QPixmap pixmap() const;
-    void addPixmap(QPixmap pix);
-    void openCrossLine(bool flag = false);
-
-    void setScene(BasicImageScene *scene);
-
+    void setScene(std::unique_ptr<BasicImageScene> scene);
     void centerScene(); ///< 居中显示
 
+    void setImage(QPixmap pix);
+    void openCrossLine(bool flag = false);
+    
     /// @brief max=0/min=0 indicates infinite zoom in/out
     void setScaleRange(double minimum = 0, double maximum = 0);
     void setScaleRange(ScaleRange range);
@@ -77,18 +60,15 @@ class PROJECT_DLL_PUBLIC ImageView : public QGraphicsView
     void resizeEvent(QResizeEvent *event) override; // 图像显示窗口大小改变
     void showEvent(QShowEvent *event) override;     // show()
 
-  protected:
-    BasicImageScene *imageScene();
+  private:
+    // void drawShape(DrawShapes shape, std::vector<QPointF> vetPt, QPointF ptCurrent);
 
   private:
-    void drawShape(DrawShapes shape, std::vector<QPointF> vetPt, QPointF ptCurrent);
+    std::unique_ptr<BasicImageScene> _scene;
 
-  private:
     QGraphicsCrossLineItem *crossLine;
-    ImageItem *image;
-    QGraphicsLineItem *line;
 
-    DrawShapes _drawStatus = DrawShapes::Normal;
+    // DrawShapes _drawStatus = DrawShapes::Normal;
     QPointF _clickPos;
     ScaleRange _scaleRange;
 };

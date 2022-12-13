@@ -17,7 +17,6 @@ class ImageItem
     , public QGraphicsPixmapItem
 {
     Q_OBJECT
-
   public:
     explicit ImageItem();
     ~ImageItem();
