@@ -66,15 +66,16 @@ ImageDisplayArea::ImageDisplayArea(QWidget *parent) : QMainWindow(parent)
     btnPixelColor = new QPushButton("pixel color");
     btnPixelColor->setFixedWidth(120);
     btnPixelColor->setFlat(true);
-    statusBar()->addWidget(btnPixelColor);
+    statusBar()->addPermanentWidget(btnPixelColor);
 
     labelPixelCoord = new QLabel("pixel coord");
     labelPixelCoord->setFixedWidth(100);
     labelPixelCoord->setAlignment(Qt::AlignCenter);
-    statusBar()->addWidget(labelPixelCoord);
+    statusBar()->addPermanentWidget(labelPixelCoord);
 
     labelImageSize = new QLabel("image size");
-    statusBar()->addWidget(labelImageSize);
+    labelImageSize->setAlignment(Qt::AlignCenter);
+    statusBar()->addPermanentWidget(labelImageSize);
 
     connect(btnPixelColor, &QAbstractButton::clicked, this,
             &ImageDisplayArea::on_changeColorFormat);

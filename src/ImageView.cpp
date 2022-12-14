@@ -219,11 +219,11 @@ void ImageView::keyReleaseEvent(QKeyEvent *event)
 
 void ImageView::mouseDoubleClickEvent(QMouseEvent *event)
 {
+    QGraphicsView::mouseDoubleClickEvent(event);
     if (event->button() == Qt::MiddleButton)
     {
-        this->centerScene();
+        centerScene();
     }
-    QGraphicsView::mouseDoubleClickEvent(event);
 }
 
 void ImageView::mousePressEvent(QMouseEvent *event)
@@ -283,6 +283,5 @@ void ImageView::openCrossLine(bool flag)
 void ImageView::showEvent(QShowEvent *event)
 {
     QGraphicsView::showEvent(event);
-    scene()->setSceneRect(this->rect());
     centerScene();
 }
