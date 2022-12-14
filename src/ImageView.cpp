@@ -48,18 +48,12 @@ void ImageView::setImage(QPixmap pix)
     if (pix.isNull())
         return;
     _scene->setImage(pix);
-    centerScene();
-    // scene()->setSceneRect(pix.rect());
-    // image->setPixmap(pix);
 }
 
 void ImageView::setScene(std::unique_ptr<BasicImageScene> scene)
 {
     _scene = std::move(scene);
     QGraphicsView::setScene(_scene.get());
-
-    // image = new ImageItem();
-    // scene->addItem(image);
 
     /* 十字中心线 */
     crossLine = new QGraphicsCrossLineItem(_scene->sceneRect());
@@ -112,12 +106,14 @@ double ImageView::getScale() const
 
 void ImageView::setScaleRange(double minimum, double maximum)
 {
-    if (minimum <= maximum)
-        _scaleRange = {minimum < 0 ? 0 : minimum, maximum < 0 ? 0 : maximum};
-    else
-        _scaleRange = {maximum < 0 ? 0 : maximum, minimum < 0 ? 0 : minimum};
+    if (maximum < minimum)
+        std::swap(minimum, maximum);
+    minimum = std::max(0.0, minimum);
+    maximum = std::max(0.0, maximum);
 
-    this->setupScale(transform().m11());
+    _scaleRange = {minimum, maximum};
+
+    setupScale(transform().m11());
 }
 
 void ImageView::setScaleRange(ScaleRange range)
@@ -167,10 +163,7 @@ void ImageView::scaleDown()
 
 void ImageView::setupScale(double scale)
 {
-    if (scale < _scaleRange.minimum)
-        scale = _scaleRange.minimum;
-    else if (scale > _scaleRange.maximum) // && _scaleRange.maximum > 0
-        scale = _scaleRange.maximum;
+    scale = std::max(_scaleRange.minimum, std::min(_scaleRange.maximum, scale));
 
     if (scale <= 0)
         return;
@@ -180,7 +173,8 @@ void ImageView::setupScale(double scale)
 
     QTransform matrix;
     matrix.scale(scale, scale);
-    this->setTransform(matrix, false);
+    setTransform(matrix, false);
+
     Q_EMIT scaleChanged(scale);
 }
 

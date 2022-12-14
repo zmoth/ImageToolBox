@@ -64,7 +64,7 @@ ImageDisplayArea::ImageDisplayArea(QWidget *parent) : QMainWindow(parent)
     statusBar()->addWidget(btnCrossLine);
 
     btnPixelColor = new QPushButton("pixel color");
-    btnPixelColor->setFixedWidth(100);
+    btnPixelColor->setFixedWidth(120);
     btnPixelColor->setFlat(true);
     statusBar()->addWidget(btnPixelColor);
 
@@ -106,6 +106,7 @@ void ImageDisplayArea::loadImage()
         return;
 
     this->setPixmap(img);
+    View->centerScene();
 }
 
 void ImageDisplayArea::saveImage()
