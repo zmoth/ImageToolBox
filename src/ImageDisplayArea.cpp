@@ -1,5 +1,6 @@
 #include "ImageDisplayArea.hpp"
 
+#include "BasicImageScene.hpp"
 #include "ImageItem.hpp"
 
 #include <QAbstractButton>
@@ -35,6 +36,27 @@ ImageDisplayArea::ImageDisplayArea(QWidget *parent) : QMainWindow(parent)
 
     View = new ImageView();
     this->setCentralWidget(View);
+    BasicImageScene *s = dynamic_cast<BasicImageScene *>(View->scene());
+    connect(s, &BasicImageScene::updatePixelPos, this,
+            [this](QPoint pos)
+            { labelPixelCoord->setText(tr("%1,%2").arg(pos.x(), 5).arg(pos.y(), 5)); });
+    connect(s, &BasicImageScene::updatePixelColor, this,
+            [this](QColor color)
+            {
+                imageColor = color;
+                if (btnPixelColor->text().left(1) != "(")
+                {
+                    btnPixelColor->setText(color.name(QColor::HexArgb));
+                }
+                else
+                {
+                    btnPixelColor->setText(tr("(%1,%2,%3,%4)")
+                                               .arg(color.alpha(), 3)
+                                               .arg(color.red(), 3)
+                                               .arg(color.green(), 3)
+                                               .arg(color.blue(), 3));
+                }
+            });
 
     btnCrossLine = new QPushButton("+");
     btnCrossLine->setToolTip(tr("cross line"));
@@ -42,10 +64,13 @@ ImageDisplayArea::ImageDisplayArea(QWidget *parent) : QMainWindow(parent)
     statusBar()->addWidget(btnCrossLine);
 
     btnPixelColor = new QPushButton("pixel color");
+    btnPixelColor->setFixedWidth(100);
     btnPixelColor->setFlat(true);
     statusBar()->addWidget(btnPixelColor);
 
     labelPixelCoord = new QLabel("pixel coord");
+    labelPixelCoord->setFixedWidth(100);
+    labelPixelCoord->setAlignment(Qt::AlignCenter);
     statusBar()->addWidget(labelPixelCoord);
 
     labelImageSize = new QLabel("image size");
@@ -116,35 +141,18 @@ void ImageDisplayArea::setPixmap(QPixmap pix)
     labelImageSize->setText(QString::number(pix.width()) + "x" + QString::number(pix.height()));
 }
 
-void ImageDisplayArea::on_updatePixal(QPoint pos, QColor color)
-{
-    labelPixelCoord->setText(QString::number(pos.x()) + "," + QString::number(pos.y()));
-    //  btnPixelColor->setStyleSheet("color:" + color.name()); // 改变字体颜色
-    imageColor = color;
-    if (btnPixelColor->text().left(1) != "(")
-    {
-        btnPixelColor->setText(color.name());
-    }
-    else
-    {
-        btnPixelColor->setText("(" + QString::number(color.red()) + "," +
-                               QString::number(color.green()) + "," +
-                               QString::number(color.blue()) + ")");
-    }
-}
-
 void ImageDisplayArea::on_changeColorFormat()
 {
     if (btnPixelColor->text().left(1) == "(")
     {
-        btnPixelColor->setToolTip(tr("HEX"));
-        btnPixelColor->setText(imageColor.name());
+        btnPixelColor->setText(imageColor.name(QColor::HexArgb));
     }
     else
     {
-        btnPixelColor->setToolTip(tr("RGB"));
-        btnPixelColor->setText("(" + QString::number(imageColor.red()) + "," +
-                               QString::number(imageColor.green()) + "," +
-                               QString::number(imageColor.blue()) + ")");
+        btnPixelColor->setText(tr("(%1,%2,%3,%4)")
+                                   .arg(imageColor.alpha(), 3)
+                                   .arg(imageColor.red(), 3)
+                                   .arg(imageColor.green(), 3)
+                                   .arg(imageColor.blue(), 3));
     }
 }

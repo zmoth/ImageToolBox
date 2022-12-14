@@ -31,12 +31,6 @@ class PROJECT_DLL_PUBLIC ImageDisplayArea : public QMainWindow
     void setPixmap(QPixmap pix); /* 图像展示*/
 
   private Q_SLOTS:
-    /**
-     * @brief 更新像素位置和颜色标签
-     * @param pos 像素位置
-     * @param color 像素颜色
-     */
-    void on_updatePixal(QPoint pos, QColor color);
 
     void on_changeColorFormat();
 
