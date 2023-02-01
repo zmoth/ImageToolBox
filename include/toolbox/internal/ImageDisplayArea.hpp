@@ -9,15 +9,15 @@
  */
 #pragma once
 
-#include "Export.hpp"
-#include "ImageView.hpp"
-
 #include <QAction>
 #include <QGraphicsView>
 #include <QLabel>
 #include <QMainWindow>
 #include <QPixmap>
 #include <QPushButton>
+
+#include "Export.hpp"
+#include "ImageView.hpp"
 
 class PROJECT_DLL_PUBLIC ImageDisplayArea : public QMainWindow
 {

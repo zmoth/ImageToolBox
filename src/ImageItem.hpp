@@ -1,10 +1,3 @@
-/**
- *  @brief 图像类
- *  @author moth
- *  @date 2022.08.05
- *  @version v0.1
- *  @note
- */
 #pragma once
 
 #include <QColor>

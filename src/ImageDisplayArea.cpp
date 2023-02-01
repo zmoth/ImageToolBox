@@ -1,8 +1,5 @@
 #include "ImageDisplayArea.hpp"
 
-#include "BasicImageScene.hpp"
-#include "ImageItem.hpp"
-
 #include <QAbstractButton>
 #include <QBoxLayout>
 #include <QDebug>
@@ -15,7 +12,9 @@
 #include <QtMath>
 #include <QtWidgets>
 
-/* 析构函数 */
+#include "BasicImageScene.hpp"
+#include "ImageItem.hpp"
+
 ImageDisplayArea::ImageDisplayArea(QWidget *parent) : QMainWindow(parent)
 {
     this->setContentsMargins(0, 0, 0, 0);
@@ -37,10 +36,14 @@ ImageDisplayArea::ImageDisplayArea(QWidget *parent) : QMainWindow(parent)
     View = new ImageView();
     this->setCentralWidget(View);
     BasicImageScene *s = dynamic_cast<BasicImageScene *>(View->scene());
-    connect(s, &BasicImageScene::updatePixelPos, this,
+    connect(s,
+            &BasicImageScene::updatePixelPos,
+            this,
             [this](QPoint pos)
             { labelPixelCoord->setText(tr("%1,%2").arg(pos.x(), 5).arg(pos.y(), 5)); });
-    connect(s, &BasicImageScene::updatePixelColor, this,
+    connect(s,
+            &BasicImageScene::updatePixelColor,
+            this,
             [this](QColor color)
             {
                 imageColor = color;
@@ -77,17 +80,21 @@ ImageDisplayArea::ImageDisplayArea(QWidget *parent) : QMainWindow(parent)
     labelImageSize->setAlignment(Qt::AlignCenter);
     statusBar()->addPermanentWidget(labelImageSize);
 
-    connect(btnPixelColor, &QAbstractButton::clicked, this,
-            &ImageDisplayArea::on_changeColorFormat);
+    connect(
+        btnPixelColor, &QAbstractButton::clicked, this, &ImageDisplayArea::on_changeColorFormat);
 
-    connect(btnPixelColor, &QAbstractButton::clicked, this,
+    connect(btnPixelColor,
+            &QAbstractButton::clicked,
+            this,
             [=]()
             {
                 QClipboard *clip = QApplication::clipboard();
                 clip->setText(btnPixelColor->text());
             });
 
-    connect(btnCrossLine, &QAbstractButton::toggled, this,
+    connect(btnCrossLine,
+            &QAbstractButton::toggled,
+            this,
             [=](bool flag) { View->openCrossLine(flag); });
 }
 
@@ -95,8 +102,8 @@ ImageDisplayArea::~ImageDisplayArea() {}
 
 void ImageDisplayArea::loadImage()
 {
-    QString fileName = QFileDialog::getOpenFileName(nullptr, tr("Open Image"), QDir::homePath(),
-                                                    tr("Image Files (*.png *.jpg *.bmp)"));
+    QString fileName = QFileDialog::getOpenFileName(
+        nullptr, tr("Open Image"), QDir::homePath(), tr("Image Files (*.png *.jpg *.bmp)"));
 
     if (fileName.isEmpty())
         return;
@@ -113,25 +120,24 @@ void ImageDisplayArea::loadImage()
 void ImageDisplayArea::saveImage()
 {
     QString fileName =
-        QFileDialog::getSaveFileName(this, tr("Save Image"), "",
-                                     tr("Image Files (*.png *.jpg *.bmp)")); // 选择路径
+        QFileDialog::getSaveFileName(this,
+                                     tr("Save Image"),
+                                     "",
+                                     tr("Image Files (*.png *.jpg *.bmp)"));  // 选择路径
     if (fileName.isEmpty())
         return;
 
     QImage img2 = View->image().toImage();
 
-    if (!(img2.save(fileName))) // 保存图像
+    if (!(img2.save(fileName)))  // 保存图像
     {
-        QMessageBox::information(this, tr("Failed to save the image"),
-                                 tr("Failed to save the image!"));
+        QMessageBox::information(
+            this, tr("Failed to save the image"), tr("Failed to save the image!"));
         return;
     }
 }
 
-QPixmap ImageDisplayArea::pixmap() const
-{
-    return View->image();
-}
+QPixmap ImageDisplayArea::pixmap() const { return View->image(); }
 
 void ImageDisplayArea::setPixmap(QPixmap pix)
 {

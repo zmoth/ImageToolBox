@@ -22,8 +22,8 @@ class QGraphicsCrossLineItem : public QGraphicsPathItem
 
     explicit QGraphicsCrossLineItem(QGraphicsItem *parent = nullptr);
     QGraphicsCrossLineItem(const QCrossRect &crossRect, QGraphicsItem *parent = nullptr);
-    QGraphicsCrossLineItem(qreal x, qreal y, qreal width, qreal height,
-                           QGraphicsItem *parent = nullptr);
+    QGraphicsCrossLineItem(
+        qreal x, qreal y, qreal width, qreal height, QGraphicsItem *parent = nullptr);
 
     void setCrossLine(const QCrossRect &crossline);
 

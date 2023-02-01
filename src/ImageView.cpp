@@ -1,8 +1,5 @@
 #include "ImageView.hpp"
 
-#include "BasicImageScene.hpp"
-#include "shapes/CrossLine.hpp"
-
 #include <QDebug>
 #include <QEvent>
 #include <QGraphicsItem>
@@ -14,14 +11,17 @@
 #include <QWheelEvent>
 #include <QtMath>
 
+#include "BasicImageScene.hpp"
+#include "shapes/CrossLine.hpp"
+
 ImageView::ImageView(QWidget *parent) : QGraphicsView(parent)
 {
     setMouseTracking(true);
     setDragMode(QGraphicsView::ScrollHandDrag);
     setRenderHint(QPainter::Antialiasing);
 
-    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // 隐藏水平条
-    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);   // 隐藏竖条
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);  // 隐藏水平条
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);    // 隐藏竖条
 
     setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 
@@ -33,15 +33,9 @@ ImageView::ImageView(QWidget *parent) : QGraphicsView(parent)
     setScaleRange(0.1, 10);
 }
 
-ImageView::~ImageView()
-{
-    delete crossLine;
-}
+ImageView::~ImageView() { delete crossLine; }
 
-QPixmap ImageView::image() const
-{
-    return _scene->image();
-}
+QPixmap ImageView::image() const { return _scene->image(); }
 
 void ImageView::setImage(QPixmap pix)
 {
@@ -99,10 +93,7 @@ void ImageView::wheelEvent(QWheelEvent *event)
         scaleDown();
 }
 
-double ImageView::getScale() const
-{
-    return transform().m11();
-}
+double ImageView::getScale() const { return transform().m11(); }
 
 void ImageView::setScaleRange(double minimum, double maximum)
 {
@@ -116,10 +107,7 @@ void ImageView::setScaleRange(double minimum, double maximum)
     setupScale(transform().m11());
 }
 
-void ImageView::setScaleRange(ScaleRange range)
-{
-    setScaleRange(range.minimum, range.maximum);
-}
+void ImageView::setScaleRange(ScaleRange range) { setScaleRange(range.minimum, range.maximum); }
 
 void ImageView::scaleUp()
 {
@@ -182,16 +170,16 @@ void ImageView::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key())
     {
-        case Qt::Key_Shift :
+        case Qt::Key_Shift:
             setDragMode(QGraphicsView::RubberBandDrag);
             break;
 
-        case Qt::Key_Control :
+        case Qt::Key_Control:
             setDragMode(QGraphicsView::RubberBandDrag);
             // _drawStatus = DrawShapes::Line;
             break;
 
-        default :
+        default:
             break;
     }
 
@@ -202,16 +190,16 @@ void ImageView::keyReleaseEvent(QKeyEvent *event)
 {
     switch (event->key())
     {
-        case Qt::Key_Shift :
+        case Qt::Key_Shift:
             setDragMode(QGraphicsView::ScrollHandDrag);
             break;
 
-        case Qt::Key_Control :
+        case Qt::Key_Control:
             setDragMode(QGraphicsView::ScrollHandDrag);
             // _drawStatus = DrawShapes::Normal;
             break;
 
-        default :
+        default:
             break;
     }
     QGraphicsView::keyReleaseEvent(event);

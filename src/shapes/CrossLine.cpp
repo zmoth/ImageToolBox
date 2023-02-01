@@ -8,8 +8,8 @@ QGraphicsCrossLineItem::QGraphicsCrossLineItem(const QCrossRect &crossRect, QGra
     setCrossLine(crossRect);
 }
 
-QGraphicsCrossLineItem::QGraphicsCrossLineItem(qreal x, qreal y, qreal width, qreal height,
-                                               QGraphicsItem *parent)
+QGraphicsCrossLineItem::QGraphicsCrossLineItem(
+    qreal x, qreal y, qreal width, qreal height, QGraphicsItem *parent)
     : QGraphicsPathItem(parent)
 {
     setCrossLine(x, y, width, height);
