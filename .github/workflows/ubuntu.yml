@@ -1,0 +1,71 @@
+name: Ubuntu
+# Qt官方没有linux平台的x86包
+on:
+  # push代码时触发workflow
+  push:
+    branches:
+      - master
+      - main
+    tags:
+      - "*"
+    # 忽略README.md
+    paths-ignore:
+      - '*.md'
+      - 'LICENSE'
+      - 'Doxyfile.in'
+      - '.clang-format'
+      - '.git*'
+      - '.git*'
+      - '.github/workflows/macos.yml'
+      - '.github/workflows/windows.yml'
+      - 'scripts/windows*'
+  # pull_request时触发workflow
+  pull_request:
+    paths-ignore:
+      - '*.md'
+      - 'LICENSE'
+      - 'Doxyfile.in'
+      - '.clang-format'
+      - '.git*'
+      - '.github/workflows/macos.yml'
+      - '.github/workflows/windows.yml'
+      - 'scripts/windows*'
+
+jobs:
+  build:
+    name: CI
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04]
+        qt_version: [5.15.2,6.3.0]
+        qt_arch: [gcc_64]
+        build_type: [Release]
+        exclude: 
+          # Qt6.2.2 need GLIBC_2.28, ubuntu 18.04 have not.
+          - os: ubuntu-18.04
+            qt_version: 6.2.2
+            qt_arch: gcc_64
+    env:
+      targetName: exedemo
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      # 安装Qt
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: ${{ matrix.qt_version }}
+          modules: ${{ matrix.modules }}
+
+      - name: ubuntu install
+        run: sudo apt-get install libxkbcommon-dev
+
+      - name: ${{ matrix.os }} - ${{ matrix.qt_versionsionsion }} - Generate Dependencies and Build
+        run: | 
+          cmake -S . -Bbuild -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          cmake --build build
