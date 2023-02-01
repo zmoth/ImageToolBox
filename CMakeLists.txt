@@ -20,24 +20,17 @@ else()
   set(is_root_project ON)
 endif()
 
-set(PROJECT_DEVELOPER_DEFAULTS "${is_root_project}" CACHE BOOL "Turns on default settings for development")
+set(PROJECT_DEVELOPER_DEFAULTS
+    "${is_root_project}"
+    CACHE BOOL "Turns on default settings for development")
 
 option(BUILD_TESTING "Build tests" "${PROJECT_DEVELOPER_DEFAULTS}")
 option(BUILD_EXAMPLES "Build Examples" "${PROJECT_DEVELOPER_DEFAULTS}")
 option(BUILD_DOCS "Build Documentation" "${PROJECT_DEVELOPER_DEFAULTS}")
 
-if(MSVC)
-  # 设置MSVC编译编码
-  add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
-  add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
-endif()
-
 if(is_root_project)
   # 加入一个配置头文件，用于处理 CMake 对源码的设置
-  configure_file(
-    "${PROJECT_SOURCE_DIR}/config.h.in"
-    "${PROJECT_BINARY_DIR}/config.h"
-  )
+  configure_file("${PROJECT_SOURCE_DIR}/config.h.in" "${PROJECT_BINARY_DIR}/config.h")
 
   # 设置输出路径
   set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib) # 静态库的文件夹位置
@@ -52,11 +45,11 @@ if(is_root_project)
   set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/lib/Release)
   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/bin/Release)
 
-  # 这个就是定义各个版本对应的后缀，例如d，debug版本后缀，当然你想定义为其他，	#自己修改这块就可以了。
-  SET(CMAKE_DEBUG_POSTFIX "d" CACHE STRING "add a postfix, usually d on windows")
-  SET(CMAKE_RELEASE_POSTFIX "" CACHE STRING "add a postfix, usually empty on windows")
-  SET(CMAKE_RELWITHDEBINFO_POSTFIX "rd" CACHE STRING "add a postfix, usually empty on windows")
-  SET(CMAKE_MINSIZEREL_POSTFIX "s" CACHE STRING "add a postfix, usually empty on windows")
+  # 这个就是定义各个版本对应的后缀，例如d，debug版本后缀，当然你想定义为其他，自己修改这块就可以了。
+  set(CMAKE_DEBUG_POSTFIX "d")
+  set(CMAKE_RELEASE_POSTFIX "")
+  set(CMAKE_RELWITHDEBINFO_POSTFIX "rd")
+  set(CMAKE_MINSIZEREL_POSTFIX "s")
 
   include_directories(${PROJECT_BINARY_DIR}) # config.h
 endif()
@@ -67,13 +60,12 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # qt
-set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets) # 识别是Qt6还是Qt5
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
-message(STATUS "QT_VERSION_MAJOR: ${QT_VERSION_MAJOR}; QT_DIR: ${QT_DIR}")
+message(STATUS "QT_VERSION: ${QT_VERSION}; QT_DIR: ${QT_DIR}")
 
 file(GLOB_RECURSE CPP_SOURCE_FILES src/*.cpp src/*.cxx src/*.cc)
 file(GLOB_RECURSE CPP_INCLUDE_FILES include/*.hpp include/*.h)
@@ -88,35 +80,37 @@ add_library(${PROJECT_NAME} SHARED ${PROJECT_SOURCES})
 set_target_properties(${PROJECT_NAME} PROPERTIES CLEAN_DIRECT_OUTPUT 1)
 
 # 设置头文件路径
-target_include_directories(${PROJECT_NAME}
-  PUBLIC
-  $<INSTALL_INTERFACE:include>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  PRIVATE
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/toolbox/internal>
-)
+target_include_directories(
+  ${PROJECT_NAME}
+  PUBLIC $<INSTALL_INTERFACE:include> $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+          $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/toolbox/internal>)
 
-target_link_libraries(${PROJECT_NAME}
-  PRIVATE
-  Qt${QT_VERSION_MAJOR}::Widgets
-)
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
 # 编译选项
-target_compile_definitions(${PROJECT_NAME}
-  PUBLIC
-  PROJECT_DLL_SHARED
-  PRIVATE
-  PROJECT_DLL_EXPORTS
-)
+target_compile_definitions(
+  ${PROJECT_NAME}
+  PUBLIC PROJECT_DLL_SHARED
+  PRIVATE PROJECT_DLL_EXPORTS)
+
+target_compile_options(
+  ${PROJECT_NAME}
+  PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/W4 /wd4127 /EHsc /utf-8> $<$<C_COMPILER_ID:MSVC>:/utf-8>
+          $<$<CXX_COMPILER_ID:GNU>:-Wall -Wextra> $<$<CXX_COMPILER_ID:AppleClang>:-Wall -Wextra -Werror>)
+
+if(NOT "${CMAKE_CXX_SIMULATE_ID}" STREQUAL "MSVC")
+  # Clang-Cl on MSVC identifies as "Clang" but behaves more like MSVC:
+  target_compile_options(${PROJECT_NAME} PRIVATE $<$<CXX_COMPILER_ID:Clang>:-Wall -Wextra>)
+endif()
 
 if(is_root_project)
-  INSTALL(TARGETS ${PROJECT_NAME}
+  install(
+    TARGETS ${PROJECT_NAME}
     RUNTIME DESTINATION CMAKE_RUNTIME_OUTPUT_DIRECTORY
     LIBRARY DESTINATION CMAKE_LIBRARY_OUTPUT_DIRECTORY
     ARCHIVE DESTINATION CMAKE_ARCHIVE_OUTPUT_DIRECTORY
-    BUNDLE DESTINATION CMAKE_RUNTIME_OUTPUT_DIRECTORY
-  )
+    BUNDLE DESTINATION CMAKE_RUNTIME_OUTPUT_DIRECTORY)
 endif()
 
 if(BUILD_EXAMPLES)

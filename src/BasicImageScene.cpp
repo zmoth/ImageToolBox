@@ -17,10 +17,7 @@ BasicImageScene::~BasicImageScene()
         delete _imageItem;
 }
 
-QPixmap BasicImageScene::image() const
-{
-    return _imageItem->pixmap();
-}
+QPixmap BasicImageScene::image() const { return _imageItem->pixmap(); }
 
 void BasicImageScene::setImage(QPixmap pix)
 {
@@ -36,7 +33,7 @@ void BasicImageScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
     if (_imageItem->pixmap().rect().contains(pos, false))
     {
         // qDebug() << pos + QPoint(1, 1) << _imageItem->pixmap().toImage().pixelColor(pos);
-        Q_EMIT updatePixelPos(pos + QPoint(1, 1)); // 2448x2048 [1~2448]
+        Q_EMIT updatePixelPos(pos + QPoint(1, 1));  // 2448x2048 [1~2448]
         Q_EMIT updatePixelColor(_imageItem->pixmap().toImage().pixelColor(pos));
     }
 }

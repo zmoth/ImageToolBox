@@ -7,9 +7,9 @@
  */
 #pragma once
 
-#include "Export.hpp"
-
 #include <QtWidgets/QGraphicsView>
+
+#include "Export.hpp"
 
 class BasicImageScene;
 class QGraphicsCrossLineItem;
@@ -31,7 +31,7 @@ class PROJECT_DLL_PUBLIC ImageView : public QGraphicsView
     ImageView operator=(const ImageView &) = delete;
 
     void setScene(std::unique_ptr<BasicImageScene> scene);
-    void centerScene(); ///< 居中显示
+    void centerScene();  ///< 居中显示
 
     QPixmap image() const;
     void setImage(QPixmap pix);
@@ -51,15 +51,15 @@ class PROJECT_DLL_PUBLIC ImageView : public QGraphicsView
     void scaleChanged(double scale);
 
   protected:
-    void wheelEvent(QWheelEvent *event) override; ///< 鼠标滚轮，放大缩小
+    void wheelEvent(QWheelEvent *event) override;  ///< 鼠标滚轮，放大缩小
     void keyPressEvent(QKeyEvent *event) override;
     void keyReleaseEvent(QKeyEvent *event) override;
-    void mouseDoubleClickEvent(QMouseEvent *event) override; ///< 鼠标中键双击：填充整个屏幕
+    void mouseDoubleClickEvent(QMouseEvent *event) override;  ///< 鼠标中键双击：填充整个屏幕
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
-    void resizeEvent(QResizeEvent *event) override; // 图像显示窗口大小改变
-    void showEvent(QShowEvent *event) override;     // show()
+    void resizeEvent(QResizeEvent *event) override;  // 图像显示窗口大小改变
+    void showEvent(QShowEvent *event) override;      // show()
 
   private:
     // void drawShape(DrawShapes shape, std::vector<QPointF> vetPt, QPointF ptCurrent);

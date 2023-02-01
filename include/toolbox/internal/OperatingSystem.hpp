@@ -5,11 +5,11 @@
 #define PROJECT_DLL_PLATFORM_CYGWIN
 #define PROJECT_DLL_PLATFORM_UNIX
 #define PROJECT_DLL_PLATFORM_WINDOWS
-#elif defined(_WIN16) || defined(_WIN32) || defined(_WIN64) || defined(__WIN32__) ||               \
+#elif defined(_WIN16) || defined(_WIN32) || defined(_WIN64) || defined(__WIN32__) || \
     defined(__TOS_WIN__) || defined(__WINDOWS__)
 #define PROJECT_DLL_PLATFORM "Windows"
 #define PROJECT_DLL_PLATFORM_WINDOWS
-#elif defined(macintosh) || defined(Macintosh) || defined(__TOS_MACOS__) ||                        \
+#elif defined(macintosh) || defined(Macintosh) || defined(__TOS_MACOS__) || \
     (defined(__APPLE__) && defined(__MACH__))
 #define PROJECT_DLL_PLATFORM "Mac"
 #define PROJECT_DLL_PLATFORM_MAC
@@ -18,7 +18,7 @@
 #define PROJECT_DLL_PLATFORM "Linux"
 #define PROJECT_DLL_PLATFORM_LINUX
 #define PROJECT_DLL_PLATFORM_UNIX
-#elif defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__bsdi__) ||  \
+#elif defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__bsdi__) || \
     defined(__DragonFly__)
 #define PROJECT_DLL_PLATFORM "BSD"
 #define PROJECT_DLL_PLATFORM_BSD
