@@ -5,6 +5,9 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QtMath>
 
+namespace ImageToolBox
+{
+
 BasicImageScene::BasicImageScene(QObject *parent) : QGraphicsScene(parent)
 {
     _imageItem = new QGraphicsPixmapItem();
@@ -17,7 +20,10 @@ BasicImageScene::~BasicImageScene()
         delete _imageItem;
 }
 
-QPixmap BasicImageScene::image() const { return _imageItem->pixmap(); }
+QPixmap BasicImageScene::image() const
+{
+    return _imageItem->pixmap();
+}
 
 void BasicImageScene::setImage(QPixmap pix)
 {
@@ -37,3 +43,5 @@ void BasicImageScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
         Q_EMIT updatePixelColor(_imageItem->pixmap().toImage().pixelColor(pos));
     }
 }
+
+}  // namespace ImageToolBox

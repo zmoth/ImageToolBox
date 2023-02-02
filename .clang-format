@@ -2,14 +2,13 @@ Language: Cpp
 BasedOnStyle: Google
 IndentWidth: 4
 AccessModifierOffset: -2
-AllowAllArgumentsOnNextLine: true
-AllowAllParametersOfDeclarationOnNextLine: true
+AllowAllArgumentsOnNextLine: false
+AllowAllParametersOfDeclarationOnNextLine: false
 AllowShortBlocksOnASingleLine: Empty
-AllowShortIfStatementsOnASingleLine: Never
 AllowShortFunctionsOnASingleLine: Empty
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortIfStatementsOnASingleLine: Never
 AllowShortLoopsOnASingleLine: false
-AllowShortFunctionsOnASingleLine: All
-BreakBeforeBraces: Custom
 BinPackArguments: false
 BinPackParameters: false
 BraceWrapping:
@@ -18,19 +17,24 @@ BraceWrapping:
   AfterControlStatement: Always
   AfterEnum: true
   AfterFunction: true
-  AfterNamespace: false
-  AfterObjCDeclaration: true
+  AfterNamespace: true
   AfterStruct: true
   AfterUnion: true
   AfterExternBlock: true
   BeforeCatch: true
   BeforeElse: true
   BeforeLambdaBody: true
-  BeforeWhile: false
+  # BeforeWhile: true
+  # SplitEmptyFunction: true
+  # SplitEmptyRecord: true
+  # SplitEmptyNamespace: true
+BreakBeforeBraces: Custom
 BreakConstructorInitializers: BeforeComma
 BreakInheritanceList: BeforeComma
+ColumnLimit: 100
 DerivePointerAlignment: false
 DisableFormat: false
-PointerAlignment: Right
 PackConstructorInitializers: CurrentLine
-ColumnLimit: 100
+PointerAlignment: Right
+QualifierAlignment: Left
+SpaceAfterTemplateKeyword: false

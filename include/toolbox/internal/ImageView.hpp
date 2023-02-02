@@ -11,6 +11,9 @@
 
 #include "Export.hpp"
 
+namespace ImageToolBox
+{
+
 class BasicImageScene;
 class QGraphicsCrossLineItem;
 
@@ -73,3 +76,5 @@ class PROJECT_DLL_PUBLIC ImageView : public QGraphicsView
     QPointF _clickPos;
     ScaleRange _scaleRange;
 };
+
+}  // namespace ImageToolBox

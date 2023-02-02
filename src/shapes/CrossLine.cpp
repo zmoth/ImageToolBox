@@ -1,5 +1,8 @@
 #include "CrossLine.hpp"
 
+namespace ImageToolBox
+{
+
 QGraphicsCrossLineItem::QGraphicsCrossLineItem(QGraphicsItem *parent) : QGraphicsPathItem(parent) {}
 
 QGraphicsCrossLineItem::QGraphicsCrossLineItem(const QCrossRect &crossRect, QGraphicsItem *parent)
@@ -8,8 +11,11 @@ QGraphicsCrossLineItem::QGraphicsCrossLineItem(const QCrossRect &crossRect, QGra
     setCrossLine(crossRect);
 }
 
-QGraphicsCrossLineItem::QGraphicsCrossLineItem(
-    qreal x, qreal y, qreal width, qreal height, QGraphicsItem *parent)
+QGraphicsCrossLineItem::QGraphicsCrossLineItem(qreal x,
+                                               qreal y,
+                                               qreal width,
+                                               qreal height,
+                                               QGraphicsItem *parent)
     : QGraphicsPathItem(parent)
 {
     setCrossLine(x, y, width, height);
@@ -46,3 +52,5 @@ void QGraphicsCrossLineItem::setCrossType(CrossType type)
     _type = type;
     setCrossLine(_crossRect);
 }
+
+}  // namespace ImageToolBox

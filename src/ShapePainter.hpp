@@ -1,4 +1,6 @@
 #pragma once
+namespace ImageToolBox
+{
 
 class ShapePainter
 {
@@ -13,3 +15,5 @@ class ShapePainter
     ShapePainter(/* args */);
     ~ShapePainter();
 };
+
+}  // namespace ImageToolBox

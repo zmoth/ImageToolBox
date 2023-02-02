@@ -5,6 +5,9 @@
 #include <QObject>
 #include <QPointF>
 
+namespace ImageToolBox
+{
+
 class ImageItem
     : public QObject
     , public QGraphicsPixmapItem
@@ -22,3 +25,5 @@ class ImageItem
 
   private:
 };
+
+}  // namespace ImageToolBox

@@ -4,6 +4,8 @@
 
 #include "config.h"
 
+using ImageToolBox::ImageDisplayArea;
+
 int main(int argc, char *argv[])
 {
     qSetMessagePattern(

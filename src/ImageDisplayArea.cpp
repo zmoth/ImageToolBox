@@ -15,6 +15,9 @@
 #include "BasicImageScene.hpp"
 #include "ImageItem.hpp"
 
+namespace ImageToolBox
+{
+
 ImageDisplayArea::ImageDisplayArea(QWidget *parent) : QMainWindow(parent)
 {
     this->setContentsMargins(0, 0, 0, 0);
@@ -41,6 +44,7 @@ ImageDisplayArea::ImageDisplayArea(QWidget *parent) : QMainWindow(parent)
             this,
             [this](QPoint pos)
             { labelPixelCoord->setText(tr("%1,%2").arg(pos.x(), 5).arg(pos.y(), 5)); });
+
     connect(s,
             &BasicImageScene::updatePixelColor,
             this,
@@ -80,8 +84,10 @@ ImageDisplayArea::ImageDisplayArea(QWidget *parent) : QMainWindow(parent)
     labelImageSize->setAlignment(Qt::AlignCenter);
     statusBar()->addPermanentWidget(labelImageSize);
 
-    connect(
-        btnPixelColor, &QAbstractButton::clicked, this, &ImageDisplayArea::on_changeColorFormat);
+    connect(btnPixelColor,
+            &QAbstractButton::clicked,
+            this,
+            &ImageDisplayArea::on_changeColorFormat);
 
     connect(btnPixelColor,
             &QAbstractButton::clicked,
@@ -102,8 +108,10 @@ ImageDisplayArea::~ImageDisplayArea() {}
 
 void ImageDisplayArea::loadImage()
 {
-    QString fileName = QFileDialog::getOpenFileName(
-        nullptr, tr("Open Image"), QDir::homePath(), tr("Image Files (*.png *.jpg *.bmp)"));
+    QString fileName = QFileDialog::getOpenFileName(nullptr,
+                                                    tr("Open Image"),
+                                                    QDir::homePath(),
+                                                    tr("Image Files (*.png *.jpg *.bmp)"));
 
     if (fileName.isEmpty())
         return;
@@ -131,13 +139,17 @@ void ImageDisplayArea::saveImage()
 
     if (!(img2.save(fileName)))  // 保存图像
     {
-        QMessageBox::information(
-            this, tr("Failed to save the image"), tr("Failed to save the image!"));
+        QMessageBox::information(this,
+                                 tr("Failed to save the image"),
+                                 tr("Failed to save the image!"));
         return;
     }
 }
 
-QPixmap ImageDisplayArea::pixmap() const { return View->image(); }
+QPixmap ImageDisplayArea::pixmap() const
+{
+    return View->image();
+}
 
 void ImageDisplayArea::setPixmap(QPixmap pix)
 {
@@ -164,3 +176,5 @@ void ImageDisplayArea::on_changeColorFormat()
                                    .arg(imageColor.blue(), 3));
     }
 }
+
+}  // namespace ImageToolBox

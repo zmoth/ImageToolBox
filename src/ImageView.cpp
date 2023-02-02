@@ -14,6 +14,9 @@
 #include "BasicImageScene.hpp"
 #include "shapes/CrossLine.hpp"
 
+namespace ImageToolBox
+{
+
 ImageView::ImageView(QWidget *parent) : QGraphicsView(parent)
 {
     setMouseTracking(true);
@@ -33,9 +36,15 @@ ImageView::ImageView(QWidget *parent) : QGraphicsView(parent)
     setScaleRange(0.1, 10);
 }
 
-ImageView::~ImageView() { delete crossLine; }
+ImageView::~ImageView()
+{
+    delete crossLine;
+}
 
-QPixmap ImageView::image() const { return _scene->image(); }
+QPixmap ImageView::image() const
+{
+    return _scene->image();
+}
 
 void ImageView::setImage(QPixmap pix)
 {
@@ -85,7 +94,7 @@ void ImageView::wheelEvent(QWheelEvent *event)
         return;
     }
 
-    double const d = delta.y() / std::abs(delta.y());
+    const double d = delta.y() / std::abs(delta.y());
 
     if (d > 0.0)
         scaleUp();
@@ -93,7 +102,10 @@ void ImageView::wheelEvent(QWheelEvent *event)
         scaleDown();
 }
 
-double ImageView::getScale() const { return transform().m11(); }
+double ImageView::getScale() const
+{
+    return transform().m11();
+}
 
 void ImageView::setScaleRange(double minimum, double maximum)
 {
@@ -107,12 +119,15 @@ void ImageView::setScaleRange(double minimum, double maximum)
     setupScale(transform().m11());
 }
 
-void ImageView::setScaleRange(ScaleRange range) { setScaleRange(range.minimum, range.maximum); }
+void ImageView::setScaleRange(ScaleRange range)
+{
+    setScaleRange(range.minimum, range.maximum);
+}
 
 void ImageView::scaleUp()
 {
-    double const step = 1.2;
-    double const factor = std::pow(step, 1.0);
+    const double step = 1.2;
+    const double factor = std::pow(step, 1.0);
 
     if (_scaleRange.maximum > 0)
     {
@@ -131,8 +146,8 @@ void ImageView::scaleUp()
 
 void ImageView::scaleDown()
 {
-    double const step = 1.2;
-    double const factor = std::pow(step, -1.0);
+    const double step = 1.2;
+    const double factor = std::pow(step, -1.0);
 
     if (_scaleRange.minimum > 0)
     {
@@ -273,3 +288,5 @@ void ImageView::showEvent(QShowEvent *event)
     QGraphicsView::showEvent(event);
     centerScene();
 }
+
+}  // namespace ImageToolBox

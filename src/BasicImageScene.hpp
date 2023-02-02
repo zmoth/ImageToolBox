@@ -3,13 +3,15 @@
 #include <QEvent>
 #include <QtWidgets/QGraphicsScene>
 
+namespace ImageToolBox
+{
+
 class ImageItem;
 
 /**
  * @brief 图片画布
  *
  * 一个Scene包含一个图片
- *
  */
 class BasicImageScene : public QGraphicsScene
 {
@@ -31,3 +33,5 @@ class BasicImageScene : public QGraphicsScene
   private:
     QGraphicsPixmapItem *_imageItem = nullptr;
 };
+
+}  // namespace ImageToolBox

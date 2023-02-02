@@ -5,7 +5,13 @@
 #include <QStyleOptionGraphicsItem>
 #include <QtMath>
 
-ImageItem::ImageItem() { this->setAcceptHoverEvents(true); }
+namespace ImageToolBox
+{
+
+ImageItem::ImageItem()
+{
+    this->setAcceptHoverEvents(true);
+}
 
 ImageItem::~ImageItem() {}
 
@@ -19,3 +25,5 @@ void ImageItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
     Q_EMIT this->updateItemPixel(pos, this->pixmap().toImage().pixelColor(pos - QPoint(1, 1)));
     QGraphicsItem::hoverMoveEvent(event);
 }
+
+}  // namespace ImageToolBox

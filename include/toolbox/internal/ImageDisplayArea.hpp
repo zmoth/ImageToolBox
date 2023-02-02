@@ -19,6 +19,9 @@
 #include "Export.hpp"
 #include "ImageView.hpp"
 
+namespace ImageToolBox
+{
+
 class PROJECT_DLL_PUBLIC ImageDisplayArea : public QMainWindow
 {
     Q_OBJECT
@@ -50,3 +53,5 @@ class PROJECT_DLL_PUBLIC ImageDisplayArea : public QMainWindow
     QLabel *labelImageSize;
     QLabel *labelPixelCoord;
 };
+
+}  // namespace ImageToolBox

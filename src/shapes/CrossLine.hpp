@@ -9,6 +9,9 @@
 
 #include <QGraphicsPathItem>
 
+namespace ImageToolBox
+{
+
 class QGraphicsCrossLineItem : public QGraphicsPathItem
 {
   public:
@@ -22,8 +25,11 @@ class QGraphicsCrossLineItem : public QGraphicsPathItem
 
     explicit QGraphicsCrossLineItem(QGraphicsItem *parent = nullptr);
     QGraphicsCrossLineItem(const QCrossRect &crossRect, QGraphicsItem *parent = nullptr);
-    QGraphicsCrossLineItem(
-        qreal x, qreal y, qreal width, qreal height, QGraphicsItem *parent = nullptr);
+    QGraphicsCrossLineItem(qreal x,
+                           qreal y,
+                           qreal width,
+                           qreal height,
+                           QGraphicsItem *parent = nullptr);
 
     void setCrossLine(const QCrossRect &crossline);
 
@@ -38,3 +44,5 @@ class QGraphicsCrossLineItem : public QGraphicsPathItem
     CrossType _type = CrossType::Straight;
     QCrossRect _crossRect;
 };
+
+}  // namespace ImageToolBox
