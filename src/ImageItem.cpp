@@ -5,24 +5,22 @@
 #include <QStyleOptionGraphicsItem>
 #include <QtMath>
 
-namespace ImageToolBox
-{
+namespace ImageToolBox {
 
 ImageItem::ImageItem()
 {
-    this->setAcceptHoverEvents(true);
+    setAcceptHoverEvents(true);
 }
-
-ImageItem::~ImageItem() {}
 
 void ImageItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 {
     static QPoint pos;
     pos.setX(qCeil(event->scenePos().x()));  // 舍弃小数点后的数值
     pos.setY(qCeil(event->scenePos().y()));
-    if (pos.x() <= 0 || pos.y() <= 0)
+    if (pos.x() <= 0 || pos.y() <= 0) {
         return;
-    Q_EMIT this->updateItemPixel(pos, this->pixmap().toImage().pixelColor(pos - QPoint(1, 1)));
+    }
+    Q_EMIT updateItemPixel(pos, pixmap().toImage().pixelColor(pos - QPoint(1, 1)));
     QGraphicsItem::hoverMoveEvent(event);
 }
 

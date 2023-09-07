@@ -3,8 +3,7 @@
 #include <QEvent>
 #include <QtWidgets/QGraphicsScene>
 
-namespace ImageToolBox
-{
+namespace ImageToolBox {
 
 class ImageItem;
 
@@ -20,7 +19,7 @@ class BasicImageScene : public QGraphicsScene
     explicit BasicImageScene(QObject *parent = nullptr);
     ~BasicImageScene();
 
-    QPixmap image() const;
+    [[nodiscard]] QPixmap image() const;
     void setImage(QPixmap pix);
 
   Q_SIGNALS:
@@ -28,7 +27,7 @@ class BasicImageScene : public QGraphicsScene
     void updatePixelColor(QColor color);
 
   protected:
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
 
   private:
     QGraphicsPixmapItem *_imageItem = nullptr;

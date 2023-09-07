@@ -8,14 +8,13 @@
 #include <QMouseEvent>
 #include <QPoint>
 #include <QPointF>
-#include <QWheelEvent>
 #include <QtMath>
+#include <QWheelEvent>
 
 #include "BasicImageScene.hpp"
 #include "shapes/CrossLine.hpp"
 
-namespace ImageToolBox
-{
+namespace ImageToolBox {
 
 ImageView::ImageView(QWidget *parent) : QGraphicsView(parent)
 {
@@ -38,7 +37,7 @@ ImageView::ImageView(QWidget *parent) : QGraphicsView(parent)
 
 ImageView::~ImageView()
 {
-    delete crossLine;
+    delete _crossLine;
 }
 
 QPixmap ImageView::image() const
@@ -48,8 +47,9 @@ QPixmap ImageView::image() const
 
 void ImageView::setImage(QPixmap pix)
 {
-    if (pix.isNull())
+    if (pix.isNull()) {
         return;
+    }
     _scene->setImage(pix);
 }
 
@@ -59,24 +59,22 @@ void ImageView::setScene(std::unique_ptr<BasicImageScene> scene)
     QGraphicsView::setScene(_scene.get());
 
     /* 十字中心线 */
-    crossLine = new QGraphicsCrossLineItem(_scene->sceneRect());
+    _crossLine = new QGraphicsCrossLineItem(_scene->sceneRect());
     QPen pen(Qt::green);
     pen.setWidth(1);
-    crossLine->setPen(pen);
-    _scene->addItem(crossLine);
-    crossLine->setVisible(false);
+    _crossLine->setPen(pen);
+    _scene->addItem(_crossLine);
+    _crossLine->setVisible(false);
 }
 
 void ImageView::centerScene()
 {
-    if (scene())
-    {
+    if (scene()) {
         scene()->setSceneRect(QRectF());
 
         QRectF sceneRect = scene()->sceneRect();
 
-        if (sceneRect.width() > this->rect().width() || sceneRect.height() > this->rect().height())
-        {
+        if (sceneRect.width() > this->rect().width() || sceneRect.height() > this->rect().height()) {
             fitInView(sceneRect, Qt::KeepAspectRatio);
         }
 
@@ -88,18 +86,18 @@ void ImageView::wheelEvent(QWheelEvent *event)
 {
     QPoint delta = event->angleDelta();
 
-    if (delta.y() == 0)
-    {
+    if (delta.y() == 0) {
         event->ignore();
         return;
     }
 
     const double d = delta.y() / std::abs(delta.y());
 
-    if (d > 0.0)
+    if (d > 0.0) {
         scaleUp();
-    else
+    } else {
         scaleDown();
+    }
 }
 
 double ImageView::getScale() const
@@ -109,8 +107,9 @@ double ImageView::getScale() const
 
 void ImageView::setScaleRange(double minimum, double maximum)
 {
-    if (maximum < minimum)
+    if (maximum < minimum) {
         std::swap(minimum, maximum);
+    }
     minimum = std::max(0.0, minimum);
     maximum = std::max(0.0, maximum);
 
@@ -129,12 +128,10 @@ void ImageView::scaleUp()
     const double step = 1.2;
     const double factor = std::pow(step, 1.0);
 
-    if (_scaleRange.maximum > 0)
-    {
+    if (_scaleRange.maximum > 0) {
         QTransform t = transform();
         t.scale(factor, factor);
-        if (t.m11() >= _scaleRange.maximum)
-        {
+        if (t.m11() >= _scaleRange.maximum) {
             setupScale(t.m11());
             return;
         }
@@ -149,12 +146,10 @@ void ImageView::scaleDown()
     const double step = 1.2;
     const double factor = std::pow(step, -1.0);
 
-    if (_scaleRange.minimum > 0)
-    {
+    if (_scaleRange.minimum > 0) {
         QTransform t = transform();
         t.scale(factor, factor);
-        if (t.m11() <= _scaleRange.minimum)
-        {
+        if (t.m11() <= _scaleRange.minimum) {
             setupScale(t.m11());
             return;
         }
@@ -168,11 +163,13 @@ void ImageView::setupScale(double scale)
 {
     scale = std::max(_scaleRange.minimum, std::min(_scaleRange.maximum, scale));
 
-    if (scale <= 0)
+    if (scale <= 0) {
         return;
+    }
 
-    if (scale == transform().m11())
+    if (scale == transform().m11()) {
         return;
+    }
 
     QTransform matrix;
     matrix.scale(scale, scale);
@@ -183,15 +180,10 @@ void ImageView::setupScale(double scale)
 
 void ImageView::keyPressEvent(QKeyEvent *event)
 {
-    switch (event->key())
-    {
+    switch (event->key()) {
         case Qt::Key_Shift:
-            setDragMode(QGraphicsView::RubberBandDrag);
-            break;
-
         case Qt::Key_Control:
             setDragMode(QGraphicsView::RubberBandDrag);
-            // _drawStatus = DrawShapes::Line;
             break;
 
         default:
@@ -203,12 +195,8 @@ void ImageView::keyPressEvent(QKeyEvent *event)
 
 void ImageView::keyReleaseEvent(QKeyEvent *event)
 {
-    switch (event->key())
-    {
+    switch (event->key()) {
         case Qt::Key_Shift:
-            setDragMode(QGraphicsView::ScrollHandDrag);
-            break;
-
         case Qt::Key_Control:
             setDragMode(QGraphicsView::ScrollHandDrag);
             // _drawStatus = DrawShapes::Normal;
@@ -223,16 +211,14 @@ void ImageView::keyReleaseEvent(QKeyEvent *event)
 void ImageView::mouseDoubleClickEvent(QMouseEvent *event)
 {
     QGraphicsView::mouseDoubleClickEvent(event);
-    if (event->button() == Qt::MiddleButton)
-    {
+    if (event->button() == Qt::MiddleButton) {
         centerScene();
     }
 }
 
 void ImageView::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton)
-    {
+    if (event->button() == Qt::LeftButton) {
         // // 当图形处于绘制状态时
         // if (_drawStatus != DrawShapes::Normal)
         // {
@@ -254,32 +240,26 @@ void ImageView::mouseMoveEvent(QMouseEvent *event)
 
 void ImageView::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton)
-    {
-    }
+    if (event->button() == Qt::LeftButton) {}
     QGraphicsView::mouseReleaseEvent(event);
 }
 
 void ImageView::resizeEvent(QResizeEvent *event)
 {
-    if (event->oldSize().height() == -1 || event->oldSize().width() == -1)
+    if (event->oldSize().height() == -1 || event->oldSize().width() == -1) {
         return;
-
-    if (event->size().height() != event->oldSize().height())
-    {
     }
+
+    if (event->size().height() != event->oldSize().height()) {}
 }
 
 void ImageView::openCrossLine(bool flag)
 {
-    if (flag == true)
-    {
-        crossLine->setCrossLine(sceneRect());
-        crossLine->setVisible(true);
-    }
-    else
-    {
-        crossLine->setVisible(false);
+    if (flag) {
+        _crossLine->setCrossLine(sceneRect());
+        _crossLine->setVisible(true);
+    } else {
+        _crossLine->setVisible(false);
     }
 }
 

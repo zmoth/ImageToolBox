@@ -9,6 +9,8 @@
  */
 #pragma once
 
+#include <export.h>
+
 #include <QAction>
 #include <QGraphicsView>
 #include <QLabel>
@@ -16,42 +18,40 @@
 #include <QPixmap>
 #include <QPushButton>
 
-#include "Export.hpp"
 #include "ImageView.hpp"
 
-namespace ImageToolBox
-{
+namespace ImageToolBox {
 
-class PROJECT_DLL_PUBLIC ImageDisplayArea : public QMainWindow
+class IMAGETOOLBOX_EXPORT ImageDisplayArea : public QMainWindow
 {
     Q_OBJECT
 
   public:
     explicit ImageDisplayArea(QWidget *parent = nullptr);
-    virtual ~ImageDisplayArea();
+    ~ImageDisplayArea() override = default;
 
-    QPixmap pixmap() const;      /* 当前显示图像获取 */
-    void setPixmap(QPixmap pix); /* 图像展示*/
+    [[nodiscard]] QPixmap pixmap() const; /* 当前显示图像获取 */
+    void setPixmap(QPixmap pix);          /* 图像展示*/
 
   private Q_SLOTS:
 
-    void on_changeColorFormat();
+    void _on_changeColorFormat();
 
-    void loadImage();
+    void _loadImage();
 
-    void saveImage();
+    void _saveImage();
 
   private:
-    QColor imageColor; /* 鼠标位置像素颜色 */
+    QColor _imageColor; /* 鼠标位置像素颜色 */
 
-    ImageView *View;
+    ImageView *_view;
 
     /* 按键 */
-    QPushButton *btnCrossLine;
-    QPushButton *btnPixelColor;
+    QPushButton *_btnCrossLine;
+    QPushButton *_btnPixelColor;
 
-    QLabel *labelImageSize;
-    QLabel *labelPixelCoord;
+    QLabel *_labelImageSize;
+    QLabel *_labelPixelCoord;
 };
 
 }  // namespace ImageToolBox

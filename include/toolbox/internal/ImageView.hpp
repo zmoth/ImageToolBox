@@ -7,17 +7,16 @@
  */
 #pragma once
 
+#include <export.h>
+
 #include <QtWidgets/QGraphicsView>
 
-#include "Export.hpp"
-
-namespace ImageToolBox
-{
+namespace ImageToolBox {
 
 class BasicImageScene;
 class QGraphicsCrossLineItem;
 
-class PROJECT_DLL_PUBLIC ImageView : public QGraphicsView
+class IMAGETOOLBOX_EXPORT ImageView : public QGraphicsView
 {
     Q_OBJECT
   public:
@@ -28,7 +27,7 @@ class PROJECT_DLL_PUBLIC ImageView : public QGraphicsView
     };
 
     explicit ImageView(QWidget *parent = nullptr);
-    ~ImageView();
+    ~ImageView() override;
 
     ImageView(const ImageView &) = delete;
     ImageView operator=(const ImageView &) = delete;
@@ -36,14 +35,14 @@ class PROJECT_DLL_PUBLIC ImageView : public QGraphicsView
     void setScene(std::unique_ptr<BasicImageScene> scene);
     void centerScene();  ///< 居中显示
 
-    QPixmap image() const;
+    [[nodiscard]] QPixmap image() const;
     void setImage(QPixmap pix);
     void openCrossLine(bool flag = false);
 
     /// @brief max=0/min=0 indicates infinite zoom in/out
     void setScaleRange(double minimum = 0, double maximum = 0);
     void setScaleRange(ScaleRange range);
-    double getScale() const;
+    [[nodiscard]] double getScale() const;
 
   public Q_SLOTS:
     void scaleUp();
@@ -70,7 +69,7 @@ class PROJECT_DLL_PUBLIC ImageView : public QGraphicsView
   private:
     std::unique_ptr<BasicImageScene> _scene;
 
-    QGraphicsCrossLineItem *crossLine;
+    QGraphicsCrossLineItem *_crossLine;
 
     // DrawShapes _drawStatus = DrawShapes::Normal;
     QPointF _clickPos;

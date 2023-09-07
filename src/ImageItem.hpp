@@ -5,8 +5,7 @@
 #include <QObject>
 #include <QPointF>
 
-namespace ImageToolBox
-{
+namespace ImageToolBox {
 
 class ImageItem
     : public QObject
@@ -15,7 +14,7 @@ class ImageItem
     Q_OBJECT
   public:
     explicit ImageItem();
-    ~ImageItem();
+    ~ImageItem() override = default;
 
   protected:
     void hoverMoveEvent(QGraphicsSceneHoverEvent *event) override;

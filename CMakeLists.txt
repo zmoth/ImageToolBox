@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.15)
 
 # 添加版本号
 set(PROJECT_VERSION_MAJOR 0) # 主版本号
@@ -9,26 +9,18 @@ set(PROJECT_VERSION_ALPHABET "alpha") # 希腊字母版本号
 set(PROJECT_VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}.${PROJECT_VERSION_TIME})
 
 # 工程名称
-project(imagetoolbox VERSION ${PROJECT_VERSION})
+project(
+  imagetoolbox
+  VERSION ${PROJECT_VERSION}
+)
+
 message(STATUS "${PROJECT_NAME} v${PROJECT_VERSION}")
 
-get_directory_property(_has_parent PARENT_DIRECTORY)
+option(BUILD_TESTING "Build tests" "${PROJECT_IS_TOP_LEVEL}")
+option(BUILD_EXAMPLES "Build Examples" "${PROJECT_IS_TOP_LEVEL}")
+option(BUILD_DOCS "Build Documentation" "${PROJECT_IS_TOP_LEVEL}")
 
-if(_has_parent)
-  set(is_root_project OFF)
-else()
-  set(is_root_project ON)
-endif()
-
-set(PROJECT_DEVELOPER_DEFAULTS
-    "${is_root_project}"
-    CACHE BOOL "Turns on default settings for development")
-
-option(BUILD_TESTING "Build tests" "${PROJECT_DEVELOPER_DEFAULTS}")
-option(BUILD_EXAMPLES "Build Examples" "${PROJECT_DEVELOPER_DEFAULTS}")
-option(BUILD_DOCS "Build Documentation" "${PROJECT_DEVELOPER_DEFAULTS}")
-
-if(is_root_project)
+if(PROJECT_IS_TOP_LEVEL)
   # 加入一个配置头文件，用于处理 CMake 对源码的设置
   configure_file("${PROJECT_SOURCE_DIR}/config.h.in" "${PROJECT_BINARY_DIR}/config.h")
 
@@ -68,33 +60,35 @@ set(PROJECT_SOURCES ${CPP_SOURCE_FILES} ${CPP_INCLUDE_FILES} ${RESOURCES})
 # 制作动态库
 add_library(${PROJECT_NAME} SHARED ${PROJECT_SOURCES})
 
-# 支持动态库和静态库同时存在
-set_target_properties(${PROJECT_NAME} PROPERTIES CLEAN_DIRECT_OUTPUT 1)
+# 生成输出头文件
+include(GenerateExportHeader)
+generate_export_header(
+  ${PROJECT_NAME}
+  EXPORT_FILE_NAME "${CMAKE_CURRENT_BINARY_DIR}/${INSTALL_INCLUDEDIR}/export.h"
+)
 
 # 设置头文件路径
 target_include_directories(
   ${PROJECT_NAME}
-  PUBLIC $<INSTALL_INTERFACE:include> $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  PUBLIC $<INSTALL_INTERFACE:include>
+  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/${INSTALL_INCLUDEDIR}>
   PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
-          $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/toolbox/internal>)
+  PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/toolbox/internal>)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
-# 编译选项
+# 宏定义
 target_compile_definitions(
   ${PROJECT_NAME}
-  PUBLIC PROJECT_DLL_SHARED
-  PRIVATE PROJECT_DLL_EXPORTS)
+  PUBLIC ${PROJECT_NAME}_EXPORTS
+)
 
 target_compile_options(
   ${PROJECT_NAME}
-  PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/W4 /wd4127 /EHsc /utf-8> $<$<C_COMPILER_ID:MSVC>:/utf-8>
-          $<$<CXX_COMPILER_ID:GNU>:-Wall -Wextra> $<$<CXX_COMPILER_ID:AppleClang>:-Wall -Wextra -Werror>)
-
-if(NOT "${CMAKE_CXX_SIMULATE_ID}" STREQUAL "MSVC")
-  # Clang-Cl on MSVC identifies as "Clang" but behaves more like MSVC:
-  target_compile_options(${PROJECT_NAME} PRIVATE $<$<CXX_COMPILER_ID:Clang>:-Wall -Wextra>)
-endif()
+  PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/utf-8>
+  PRIVATE $<$<C_COMPILER_ID:MSVC>:/utf-8>
+)
 
 install(
   TARGETS ${PROJECT_NAME}

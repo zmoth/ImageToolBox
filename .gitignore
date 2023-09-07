@@ -1,6 +1,7 @@
 build/
 .vscode/
 html/
+.cache
 latex/
 *.lnk
 CMakeLists.txt.user
